@@ -45,12 +45,18 @@ class H1_2RoughCfg(LeggedRobotCfg):
         control_type = 'P'
         # PD Drive parameters:
         stiffness = {
-            'hip_yaw_joint': 200.,
-            'hip_roll_joint': 200.,
-            'hip_pitch_joint': 200.,
-            'knee_joint': 300.,
-            'ankle_pitch_joint': 40.,
-            'ankle_roll_joint': 40.,
+            # 'hip_yaw_joint': 200.,
+            # 'hip_roll_joint': 200.,
+            # 'hip_pitch_joint': 200.,
+            # 'knee_joint': 300.,
+            # 'ankle_pitch_joint': 40.,
+            # 'ankle_roll_joint': 40.,
+            'hip_yaw_joint': 400.,
+            'hip_roll_joint': 400.,
+            'hip_pitch_joint': 400.,
+            'knee_joint': 600.,
+            'ankle_pitch_joint': 100.,
+            'ankle_roll_joint': 100.,
         }  # [N*m/rad]
         damping = {
             'hip_yaw_joint': 2.5,
@@ -63,7 +69,7 @@ class H1_2RoughCfg(LeggedRobotCfg):
         # action scale: target angle = actionScale * action + defaultAngle
         action_scale = 0.25
         # decimation: Number of control action updates @ sim DT per policy DT
-        decimation = 8
+        decimation = 10 # 8
 
     class sim(LeggedRobotCfg.sim):
         dt =  0.0025
@@ -78,7 +84,7 @@ class H1_2RoughCfg(LeggedRobotCfg):
         max_push_vel_xy = 1.5
 
     class asset(LeggedRobotCfg.asset):
-        file = '{LEGGED_GYM_ROOT_DIR}/resources/robots/h1_2/h1_2_12dof.urdf'
+        file = '{LEGGED_GYM_ROOT_DIR}/resources/robots/h1_2/h1_2_12dof_load.urdf'
         name = "h1_2"
         foot_name = "ankle_roll"
         penalize_contacts_on = ["hip", "knee"]
@@ -88,7 +94,7 @@ class H1_2RoughCfg(LeggedRobotCfg):
         armature = 1e-3
 
     class rewards(LeggedRobotCfg.rewards):
-        soft_dof_pos_limit = 0.9
+        soft_dof_pos_limit = 1.0 # 0.9
         base_height_target = 1.0
 
         class scales(LeggedRobotCfg.rewards.scales):
@@ -120,11 +126,11 @@ class H1_2RoughCfgPPO(LeggedRobotCfgPPO):
         # only for 'ActorCriticRecurrent':
         rnn_type = 'lstm'
         rnn_hidden_size = 64
-        rnn_num_layers = 1
+        rnn_num_layers = 2
     class algorithm( LeggedRobotCfgPPO.algorithm ):
         entropy_coef = 0.01
     class runner( LeggedRobotCfgPPO.runner ):
         policy_class_name = "ActorCriticRecurrent"
-        max_iterations = 10000
+        max_iterations = 20000
         run_name = ''
         experiment_name = 'h1_2'

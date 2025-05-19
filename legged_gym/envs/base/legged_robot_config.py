@@ -2,7 +2,7 @@ from .base_config import BaseConfig
 
 class LeggedRobotCfg(BaseConfig):
     class env:
-        num_envs = 4096
+        num_envs = 2048
         num_observations = 48
         num_privileged_obs = None # if not None a priviledge_obs_buf will be returned by step() (critic obs for assymetric training). None is returned otherwise 
         num_actions = 12
@@ -43,8 +43,8 @@ class LeggedRobotCfg(BaseConfig):
         resampling_time = 10. # time before command are changed[s]
         heading_command = True # if true: compute ang vel command from heading error
         class ranges:
-            lin_vel_x = [-1.0, 1.0] # min max [m/s]
-            lin_vel_y = [-1.0, 1.0]   # min max [m/s]
+            lin_vel_x = [-1.2, 1.2] # min max [m/s] [-1.0, 1.0]
+            lin_vel_y = [-0.1, 0.1]   # min max [m/s] [-1.0, 1.0] 
             ang_vel_yaw = [-1, 1]    # min max [rad/s]
             heading = [-3.14, 3.14]
 
@@ -70,7 +70,7 @@ class LeggedRobotCfg(BaseConfig):
     class asset:
         file = ""
         name = "legged_robot"  # actor name
-        foot_name = "None" # name of the feet bodies, used to index body state and contact force tensors
+        foot_name = "ankle_roll" # name of the feet bodies, used to index body state and contact force tensors
         penalize_contacts_on = []
         terminate_after_contacts_on = []
         disable_gravity = False
@@ -201,11 +201,11 @@ class LeggedRobotCfgPPO(BaseConfig):
     class runner:
         policy_class_name = 'ActorCritic'
         algorithm_class_name = 'PPO'
-        num_steps_per_env = 24 # per iteration
+        num_steps_per_env = 48 # per iteration
         max_iterations = 1500 # number of policy updates
 
         # logging
-        save_interval = 50 # check for potential saves every this many iterations
+        save_interval = 500 # check for potential saves every this many iterations
         experiment_name = 'test'
         run_name = ''
         # load and resume
