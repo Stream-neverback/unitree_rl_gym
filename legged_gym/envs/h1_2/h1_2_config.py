@@ -84,7 +84,8 @@ class H1_2RoughCfg(LeggedRobotCfg):
         max_push_vel_xy = 1.5
 
     class asset(LeggedRobotCfg.asset):
-        file = '{LEGGED_GYM_ROOT_DIR}/resources/robots/h1_2/h1_2_12dof_load.urdf'
+        # file = '{LEGGED_GYM_ROOT_DIR}/resources/robots/h1_2/h1_2_12dof_load.urdf'
+        file = '{LEGGED_GYM_ROOT_DIR}/resources/robots/h1_2_centaur/h1_2_12dof_centaur_fixed.urdf'
         name = "h1_2"
         foot_name = "ankle_roll"
         penalize_contacts_on = ["hip", "knee"]

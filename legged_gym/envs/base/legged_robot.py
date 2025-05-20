@@ -97,6 +97,11 @@ class LeggedRobot(BaseTask):
         self.base_lin_vel[:] = quat_rotate_inverse(self.base_quat, self.root_states[:, 7:10])
         self.base_ang_vel[:] = quat_rotate_inverse(self.base_quat, self.root_states[:, 10:13])
         self.projected_gravity[:] = quat_rotate_inverse(self.base_quat, self.gravity_vec)
+        
+        if self.cfg.domain_rand.push_robots_by_force:
+            self.forces_body = self._push_robots_force()
+        if self.cfg.domain_rand.push_robots and  (self.common_step_counter % self.cfg.domain_rand.push_interval < 10):                              
+                self.gym.apply_rigid_body_force_tensors(self.sim, gymtorch.unwrap_tensor(self.forces_body), None, gymapi.LOCAL_SPACE)  
 
         self._post_physics_step_callback()
 
@@ -257,6 +262,7 @@ class LeggedRobot(BaseTask):
                 self.dof_pos_limits[i, 1] = props["upper"][i].item()
                 self.dof_vel_limits[i] = props["velocity"][i].item()
                 self.torque_limits[i] = props["effort"][i].item()
+                self.torque_limits[i] = 400.0
                 # soft limits
                 m = (self.dof_pos_limits[i, 0] + self.dof_pos_limits[i, 1]) / 2
                 r = self.dof_pos_limits[i, 1] - self.dof_pos_limits[i, 0]
@@ -380,6 +386,27 @@ class LeggedRobot(BaseTask):
         self.gym.set_actor_root_state_tensor_indexed(self.sim,
                                                     gymtorch.unwrap_tensor(self.root_states),
                                                     gymtorch.unwrap_tensor(env_ids_int32), len(env_ids_int32))
+    
+    def _push_robots_force(self):
+        """ Random pushes the robots by generating forces
+        """
+        forces_body = torch.zeros((self.num_envs, self.num_bodies, 3), device=self.device, dtype=torch.float)
+
+        theta = 2.0 * torch.pi * torch.rand((self.num_envs, 1), device=self.device)
+        max_force_x = self.cfg.domain_rand.push_body_force_range_x[1]
+        min_force_x = self.cfg.domain_rand.push_body_force_range_x[0]
+        r_dis = torch.rand((self.num_envs, 1), device=self.device)
+        r = max_force_x * r_dis + min_force_x * (1 - r_dis)
+        
+        fx = r * torch.cos(theta)
+        fy = torch.zeros_like(fx)
+        fz = torch.zeros_like(fx)
+
+        random_xy_forces = torch.cat((fx, fy, fz), dim=-1)  # shape: [num_envs, 3]
+
+        forces_body[:, self.load_index, :] = random_xy_forces
+        # gym.apply_rigid_body_force_at_pos_tensors(sim, gymtorch.unwrap_tensor(forces), gymtorch.unwrap_tensor(force_positions), gymapi.ENV_SPACE)
+        return forces_body
 
    
     
@@ -606,8 +633,10 @@ class LeggedRobot(BaseTask):
             
         self.dof_names_to_idx = self.gym.get_asset_dof_dict(robot_asset)
         self.body_names_to_idx = self.gym.get_asset_rigid_body_dict(robot_asset)
-        self.human_torso_index =  dict(self.body_names_to_idx).get('torso_link',None)     
+        self.human_torso_index =  dict(self.body_names_to_idx).get('torso_Link',None)     
         self.human_pelvis_index =  dict(self.body_names_to_idx).get('pelvis',None) 
+        self.load_index = dict(self.body_names_to_idx).get('human_yaw_block',None)  
+        
         print('----------------------------------------')
         print('human_torso_index:',self.human_torso_index) 
         print('human_pelvis_index:',self.human_pelvis_index) 

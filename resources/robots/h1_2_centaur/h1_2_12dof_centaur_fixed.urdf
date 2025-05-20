@@ -391,21 +391,21 @@
       </geometry>
     </collision>
   </link>
-  <!-- <joint name="torso_joint" type="fixed" dont_collapse="true">
+  <joint name="torso_joint" type="fixed" dont_collapse="true">
     <origin xyz="0 0 0" rpy="0 0 0"/>
     <parent link="pelvis"/>
     <child link="torso_link"/>
     <axis xyz="0 0 1"/>
     <limit lower="-2.35" upper="2.35" effort="200" velocity="23"/>
-  </joint> -->
+  </joint>
 
-  <joint name="torso_joint" type="revolute">
+  <!-- <joint name="torso_joint" type="revolute">
     <origin xyz="0 0 0" rpy="0 0 0"/>
     <parent link="pelvis"/>
     <child link="torso_link"/>
     <axis xyz="0 1 0"/>
     <limit lower="-1.0" upper="0.1" effort="800" velocity="23"/>
-  </joint>
+  </joint> -->
 
   <!-- L arm -->
   <link name="left_shoulder_pitch_link">
@@ -1384,7 +1384,7 @@
   </joint>
 
   <link name="human_yaw_block">
-    <origin xyz="0 0 -0.05" rpy="0 0 0" />
+    <origin xyz="0 0 0.0" rpy="0 0 0" />
       <!-- <inertial>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <mass value="1.0"/>
@@ -1625,10 +1625,10 @@
     <!-- <origin xyz="-0.39193398 -0.00660919 -0.05254615" rpy="0 0 0" /> -->
     <origin xyz="-0.40674570 -0.0 -0.09991871" rpy="0 0 0" />
     <parent link="CTtorso_link"/>
-    <child link="imu_link"/>
+    <child link="CTimu_link"/>
   </joint>
 
-  <link name="imu_link">
+  <link name="CTimu_link">
     <origin xyz="0 0 0" rpy="0 0 0" />
       <visual>
       <origin

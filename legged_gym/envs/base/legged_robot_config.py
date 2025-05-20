@@ -44,7 +44,7 @@ class LeggedRobotCfg(BaseConfig):
         heading_command = True # if true: compute ang vel command from heading error
         class ranges:
             lin_vel_x = [-1.2, 1.2] # min max [m/s] [-1.0, 1.0]
-            lin_vel_y = [-0.1, 0.1]   # min max [m/s] [-1.0, 1.0] 
+            lin_vel_y = [-1.0, 1.0]   # min max [m/s] [-1.0, 1.0] 
             ang_vel_yaw = [-1, 1]    # min max [rad/s]
             heading = [-3.14, 3.14]
 
@@ -97,6 +97,10 @@ class LeggedRobotCfg(BaseConfig):
         push_robots = True
         push_interval_s = 15
         max_push_vel_xy = 1.
+        push_robots_by_force = True
+        push_body_force_range_x = [-20., 50.]
+        push_body_force_range_y = [-20., 50.]
+        push_body_force_range_z = [-20., 50.]
 
     class rewards:
         class scales:
@@ -106,7 +110,7 @@ class LeggedRobotCfg(BaseConfig):
             lin_vel_z = -2.0
             ang_vel_xy = -0.05
             orientation = -0.
-            torques = -0.00001
+            torques = -0.0  # -0.00001
             dof_vel = -0.
             dof_acc = -2.5e-7
             base_height = -0. 
@@ -116,13 +120,13 @@ class LeggedRobotCfg(BaseConfig):
             action_rate = -0.01
             stand_still = -0.
 
-        only_positive_rewards = True # if true negative total rewards are clipped at zero (avoids early termination problems)
+        only_positive_rewards = False # if true negative total rewards are clipped at zero (avoids early termination problems)
         tracking_sigma = 0.25 # tracking reward = exp(-error^2/sigma)
         soft_dof_pos_limit = 1. # percentage of urdf limits, values above this limit are penalized
         soft_dof_vel_limit = 1.
         soft_torque_limit = 1.
         base_height_target = 1.
-        max_contact_force = 100. # forces above this value are penalized
+        max_contact_force = 1500. # forces above this value are penalized
 
     class normalization:
         class obs_scales:

@@ -160,3 +160,6 @@ This project is licensed under the [BSD 3-Clause License](./LICENSE):
 
 For details, please read the full [LICENSE file](./LICENSE).
 
+
+
+tensorboard --logdir=logs/h1_2/May20_10-16-30_ --port=6006

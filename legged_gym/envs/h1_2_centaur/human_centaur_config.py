@@ -220,7 +220,33 @@ class HumanCentaurCfg( LeggedRobotCfg ):
         #                 'thigh_shank_r_joint': 15.0
         #                 }  # [N*m*s/rad]
         
-        stiffness = {   'global_z_joint': 5000.0,'yaw_terrain_joint': 1000.0, 'pitch_terrain_joint':1000.0,
+        # stiffness = {   'global_z_joint': 5000.0,'yaw_terrain_joint': 1000.0, 'pitch_terrain_joint':1000.0,
+        #                 'x_prismatic_joint':0.0, 'y_prismatic_joint':0.0,
+        #                 'z_prismatic_joint':5000.0,
+        #                 'roll_joint':0.0,'pitch_joint':0.0,'yaw_f_t_sensor_joint':0.0,
+        #                 'abad_hip_knee_motor_l_joint': 250.0, 'hip_thigh_l_joint': 250.0,
+        #                 'thigh_shank_l_joint': 250.0, 
+        #                 'abad_hip_knee_motor_r_joint': 250.0, 'hip_thigh_r_joint': 250.0,
+        #                 'thigh_shank_r_joint': 250.0
+        #                 }  # [N*m/rad]
+        # damping = {     'global_z_joint': 100.0,'yaw_terrain_joint': 50.0,'pitch_terrain_joint':50.0,
+        #                 'x_prismatic_joint':0.0, 'y_prismatic_joint':0.0,
+        #                 'z_prismatic_joint':200.0,
+        #                 'roll_joint':0.0,'pitch_joint':0.0,'yaw_f_t_sensor_joint':0.0,
+        #                 'abad_hip_knee_motor_l_joint': 15.0, 'hip_thigh_l_joint': 15.0,
+        #                 'thigh_shank_l_joint': 15.0, 
+        #                 'abad_hip_knee_motor_r_joint': 15.0, 'hip_thigh_r_joint': 15.0,
+        #                 'thigh_shank_r_joint': 15.0
+        #                 }  # [N*m*s/rad]
+        
+        
+        stiffness = {   'hip_yaw_joint': 400.,
+                        'hip_roll_joint': 400.,
+                        'hip_pitch_joint': 400.,
+                        'knee_joint': 600.,
+                        'ankle_pitch_joint': 100.,
+                        'ankle_roll_joint': 100.,
+                        'global_z_joint': 5000.0,'yaw_terrain_joint': 1000.0, 'pitch_terrain_joint':1000.0,
                         'x_prismatic_joint':0.0, 'y_prismatic_joint':0.0,
                         'z_prismatic_joint':5000.0,
                         'roll_joint':0.0,'pitch_joint':0.0,'yaw_f_t_sensor_joint':0.0,
@@ -238,7 +264,6 @@ class HumanCentaurCfg( LeggedRobotCfg ):
                         'abad_hip_knee_motor_r_joint': 15.0, 'hip_thigh_r_joint': 15.0,
                         'thigh_shank_r_joint': 15.0
                         }  # [N*m*s/rad]
-        
         # stiffness = {   'global_z_joint': 5000.0,'yaw_terrain_joint': 1000.0, 'pitch_terrain_joint':1000.0,
         #                 'x_prismatic_joint':0.0, 'y_prismatic_joint':0.0,
         #                 'z_prismatic_joint':5000.0,
